@@ -1,23 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import { Rnd } from 'rnd';
+
+const style = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  border: "solid 1px #ddd",
+  background: "#f0f0f0"
+};
 
 function App() {
+  const [state, setState] = useState({
+    width: 200,
+    height: 200,
+    x: 10,
+    y: 10
+  });
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Rnd
+        style={style}
+        size={{ width: state.width, height: state.height }}
+        position={{ x: state.x, y: state.y }}
+        onDragStop={(e, d) => {
+          setState({ x: d.x, y: d.y });
+        }}
+        onResizeStop={(e, direction, ref, delta, position) => {
+          setState({
+            width: ref.style.width,
+            height: ref.style.height,
+            ...position
+          });
+        }}
+      >
+        Rnd
+      </Rnd>
     </div>
   );
 }
